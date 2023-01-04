@@ -7,6 +7,7 @@ import UserModel from "../Models/userModel.js";
 export const createPost= async(req,res)=>{
     const newPost= new PostModel(req.body)
 
+
     try {
         await newPost.save()
         res.status(200).json(newPost)
@@ -71,13 +72,14 @@ export const getPost= async(req,res)=>{
 
         try {
             const post=await PostModel.findById(id)
-            if(!post.likes.includes(userId)){
-                await post.updateOne({$push: {likes:userId}})
-                res.status(200).json("post liked")
-            }else{
-                await post.updateOne({$pull: {likes:userId}})
-                res.status(200).json("post disliked")
-            }
+         
+            if (post.likes.includes(userId)) {
+              await post.updateOne({ $pull: { likes: userId } });
+              res.status(200).json("Post disliked");
+            }else {
+                await post.updateOne({ $push: { likes: userId } });
+                res.status(200).json("Post liked");
+              }
         } catch (error) {
             res.status(500).json(error)
         }
@@ -100,18 +102,18 @@ export const getPost= async(req,res)=>{
                     from:"posts",
                     localField:"following",
                     foreignField:"userId",
-                    as:"followingPost"
+                    as:"followingPosts"
                 }
             },
             {
                 $project:{
-                    followingPost:1,
+                    followingPosts:1,
                     _id:0
                     
                 }
             }
         ])
-        res.status(200).json(currentUserPosts.concat(...followingPosts[0].followingPost)
+        res.status(200).json(currentUserPosts.concat(...followingPosts[0].followingPosts)
         .sort((a,b)=>{
             return b.createdAt-a.createdAt
         }))

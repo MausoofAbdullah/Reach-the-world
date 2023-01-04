@@ -12,12 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadImage, uploadPost } from "../../actions/uploadAction";
 
 const Postshare = () => {
+  const loading = useSelector((state) => state.postReducer.uploading);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const desc = useRef();
   const { user } = useSelector((state) => state.authReducer.authData);
+  const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -25,32 +27,48 @@ const Postshare = () => {
       setImage(img);
     }
   };
+
+  const reset = () => {
+    setImage(null);
+    desc.current.value = "";
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newPost={
-      userId:user._id,
-      desc:desc.current.value
-    }
+    const newPost = {
+      userId: user._id,
+      desc: desc.current.value,
+    };
 
-    if(image){
-      const data=new FormData()
-      const filename=Date.now()+image.name
-      data.append("name",filename)
-      data.append("file",image)
-      newPost.image=filename
-      console.log(newPost)
+    if (image) {
+      const data = new FormData();
+      const filename = Date.now() + image.name;
+      console.log(filename, "fiind");
+
+      data.append("name", filename);
+      data.append("file", image);
+      newPost.image = filename;
+      console.log(newPost);
+      console.log(data, "yes");
       try {
-        dispatch(uploadImage(data))
+        dispatch(uploadImage(data));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-    dispatch(uploadPost(newPost))
+    dispatch(uploadPost(newPost));
+    reset();
   };
   return (
     <div className="Postshare">
-      <img src={ProfileImg} alt="" />
+      <img
+        src={
+          user.profilePicture
+            ? serverPublic + user.profilePicture
+            : serverPublic + "defaultProfile.jpeg"
+        }
+        alt=""
+      />
       <div>
         <input ref={desc} required type="text" placeholder="whats happening?" />
         <div className="postOptions">
@@ -76,8 +94,12 @@ const Postshare = () => {
             <UilSchedule />
             Schedule
           </div>
-          <button className="button ps-button" onClick={handleSubmit}>
-            share
+          <button
+            className="button ps-button"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "uploading..." : "Share"}
           </button>
           <div style={{ display: "none" }}>
             <input

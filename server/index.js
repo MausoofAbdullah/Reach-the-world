@@ -7,9 +7,15 @@ import AuthRoute from "./Routes/Auth.js"
 import userRoute from "./Routes/userRoute.js"
 import PostRoute from "./Routes/PostRoute.js"
 import UploadRoute from "./Routes/uploadRoute.js"
+import chatRoute from "./Routes/chatRoute.js"
+import messageRoute from "./Routes/messageRoute.js"
 
 //Routes
 const app = express();
+
+//to serve images for public
+app.use(express.static("public"))
+app.use('/images',express.static("images"))
 
 //middlewares
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -34,8 +40,11 @@ mongoose
 
 
   //usage of routes
+  
 
   app.use('/auth',AuthRoute)
   app.use('/user',userRoute)
   app.use('/post',PostRoute)
   app.use("/upload",UploadRoute)
+  app.use('/chat',chatRoute)
+  app.use("/message",messageRoute)
