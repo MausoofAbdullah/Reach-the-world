@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
+import OtpVerification from "./components/OtpVerification/OtpVerification";
 import "./App.css";
 import Auth from "./pages/auth/Auth";
 import Chat from "./pages/chat/Chat";
@@ -31,14 +32,16 @@ function App() {
         <Route
           path="/profile/:id"
           element={user ? <Profile /> : <Navigate to="../auth" />}
-        
         />
         <Route
           path="/chat"
-          element={user ? <Chat/> : <Navigate to="../auth" />}
-        
+          element={user ? <Chat /> : <Navigate to="../auth" />}
         />
 
+        <Route
+          path="/otpverification"
+          element={user ? <Navigate to="../home" /> : <OtpVerification />}
+        />
       </Routes>
     </div>
   );

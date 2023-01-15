@@ -29,6 +29,7 @@ const UserSchema=mongoose.Schema(
         worksAt:String,
         relationship:String,
         country:String,
+        verified:Boolean,
         followers:[],
         following:[]
     },

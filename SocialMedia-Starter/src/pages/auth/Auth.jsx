@@ -3,13 +3,16 @@ import "./Auth.css";
 import Logo from "../../img/logonew.png";
 import { useState } from "react";
 import { useDispatch, useSelector} from "react-redux"
-import { logIn, signup } from "../../actions/AuthAction";
+import { logIn} from "../../actions/AuthAction";
+import { signup } from "../../api/Authrequest";
+import { useNavigate } from 'react-router-dom'
 
 const Auth = () => {
-  const [isSignup,setIsSignup]=useState(false)
+  const [isSignup,setIsSignup]=useState(true)
   const [data,setData]=useState({firstname:"",username:"",lastname:"",password:""})
   const [confirmpass,setConfirmpass]=useState(true)
   const dispatch=useDispatch()
+  const navigate = useNavigate()
   const loading=useSelector((state)=>state.authReducer.loading)
   console.log(loading)
 
@@ -17,11 +20,19 @@ const Auth = () => {
     setData({...data,[e.target.name]:e.target.value})
   }
 
-  const handleSubmit=(e)=>{
+  const handleSubmit=async(e)=>{
     e.preventDefault()
 
     if(isSignup){
-      data.password===data.confirmpass? dispatch(signup(data)):setConfirmpass(false)
+     // data.password===data.confirmpass? dispatch(signup(data)):setConfirmpass(false)
+     if(data.password===data.confirmpass){
+      const response=await signup(data)
+      navigate("/otpverification",{
+        state:{
+          registerationData: response.data.data
+        }
+       })
+     }
     }else{
       dispatch(logIn(data))
     }
