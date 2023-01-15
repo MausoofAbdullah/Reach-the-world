@@ -4,6 +4,7 @@ export const logIn= (FormData)=>async(dispatch)=>{
     try {
         const {data} =await AuthApi.logIn(FormData)
         dispatch({type:"AUTH_SUCCESS",data:data})
+    
         
     } catch (error) {
         console.log(error)

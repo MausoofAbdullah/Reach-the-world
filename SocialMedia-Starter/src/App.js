@@ -1,12 +1,16 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Auth from "./pages/auth/Auth";
 import Chat from "./pages/chat/Chat";
 
-// import Profileside from "./components/profileSide/Profileside";
+
+import Profileside from "./components/profileSide/Profileside";
 import Home from "./pages/home/Home";
 import Profile from "./pages/Profile/Profile";
+ import AdminHome from "./pages/admin/adminHome/AdminHome";
+ import UserList from "./pages/admin/userList/UserList";
 function App() {
   const user = useSelector((state) => state.authReducer.authData);
   return (
@@ -19,6 +23,8 @@ function App() {
           path="/"
           element={user ? <Navigate to="home" /> : <Navigate to="auth" />}
         />
+        {/* <Route path="/" element={<Auth/>}/> */}
+        {/* <Route path="/" element={<Home/>}/> */}
         <Route
           path="/home"
           element={user ? <Home /> : <Navigate to="../auth" />}
@@ -26,7 +32,7 @@ function App() {
         {/* <Route path="/home" element={<Navigate to="home" />} /> */}
         <Route
           path="/auth"
-          element={user ? <Navigate to="../home" /> : <Auth />}
+          element={user?.user?.isAdmin?(<Navigate to="../admin" />):user?(<Navigate to="../home" />) : (<Auth />)}
         />
         <Route
           path="/profile/:id"
@@ -35,9 +41,15 @@ function App() {
         />
         <Route
           path="/chat"
-          element={user ? <Chat/> : <Navigate to="../auth" />}
+          element={user ? <Chat/> : <Navigate to="../home" />}
         
         />
+        <Route
+          path="/admin"
+          element={user?.user?.isAdmin? <AdminHome/>:<Navigate to="../auth" />}
+        
+        />
+        <Route path="/admin/user-list" element={<UserList />}/>
 
       </Routes>
     </div>

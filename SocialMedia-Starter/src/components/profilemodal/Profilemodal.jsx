@@ -1,3 +1,4 @@
+import React from "react";
 import { Modal, useMantineTheme } from "@mantine/core";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,7 +59,8 @@ function Profilemodal({ modalOpened, setModalOpened,data }) {
       }
     }
     dispatch(updateUser(param.id,UserData))
-    console.log(param.id,UserData,"check")
+    console.log(UserData,"check")
+    
     setModalOpened(false)
   }
 

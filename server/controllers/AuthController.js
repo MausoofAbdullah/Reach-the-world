@@ -55,8 +55,9 @@ export const loginUser = async (req, res) => {
           process.env.JWT_KEY,
           { expiresIn: "1h" }
         );
-        delete user.password;
+       
         res.status(200).json({ user, token });
+        console.log(user,"login");
       }
     } else {
       res.status(400).json("user does not exist");

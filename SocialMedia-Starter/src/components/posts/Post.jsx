@@ -16,8 +16,11 @@ const Post = () => {
     dispatch(getTimelinePosts(user._id))
   },[])
 
+  
+
   if(!posts) return "no posts"
   if(params.id) posts=posts.filter((post)=>post.userId===params.id)
+  
   return (
     
     <div className='Post'>

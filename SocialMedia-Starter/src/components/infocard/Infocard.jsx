@@ -4,7 +4,8 @@ import { UilPen } from "@iconscout/react-unicons";
 import { useState } from "react";
 import Profilemodal from "../profilemodal/Profilemodal";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Comment from '../../img/comment.png'
 import { useEffect } from "react";
 import * as UserApi from "../../api/UserRequest.js"
 import { logout } from "../../actions/AuthAction";
@@ -16,10 +17,21 @@ const Infocard = () => {
   const params=useParams()
 
   const profileUserId=params.id
+  
+
+  const navigate = useNavigate()
   // const [profileUser,setProfileUser]=useState({})
   const profileUser = useSelector((state)=>state.userReducer.userData)
 
   const{user}=useSelector((state)=>state.authReducer.authData)
+
+  const goToChat = (e) =>{
+    e.preventDefault()
+    navigate('/chat',
+        {state:{data:profileUser}}
+     )
+    console.log('inside goto chat in infocard')
+}
 
 
   // useEffect(()=>{
@@ -56,7 +68,9 @@ const Infocard = () => {
           <Profilemodal modalOpened={modalOpened}
           setModalOpened={setModalOpened}
           data={user} />
-        </div>):("")}
+        </div>):(
+                <img onClick={(e)=>goToChat(e)} src={Comment} alt="" />
+            )}
        
       </div>
       <div className="info">
