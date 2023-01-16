@@ -46,23 +46,49 @@ export const getPost= async(req,res)=>{
  }
 
  //delete post
- export const deletePost= async(req,res)=>{
-    const id =req.params.id
-    const {userId}=req.body
 
-    try {
-       const post=await PostModel.findById(id)
-       if(post.userId===userId){
-        await post.deleteOne()
-        res.status(200).json("post deleted successfully")
-       } 
-       else{
-        res.status(403).json("action forbidden")
-       }
-    } catch (error) {
-        res.status(500).json(error)
-    }
- }
+ 
+// export const deletePost = async (req, res) => {
+//     try {
+//         const { postId } = req.body
+//         console.log(postId, 'postid');
+  
+  
+//         let deletePost = await PostModel.deleteOne({ _id: postId })
+//         if (deletePost) {
+            
+  
+//             res.status(200).json({  message: " Post deleted", success: true });
+  
+//         } else {
+//             console.log("error");
+//         }
+  
+  
+  
+//     } catch (error) {
+//         res.status(500).json("hello" + error.message);
+//     }
+//   }
+  
+
+//  export const deletePost= async(req,res)=>{
+//     const id =req.params.id
+//     const {userId}=req.body
+
+//     try {
+//        const post=await PostModel.findById(id)
+//        if(post.userId===userId){
+//         await post.deleteOne()
+//         res.status(200).json("post deleted successfully")
+//        } 
+//        else{
+//         res.status(403).json("action forbidden")
+//        }
+//     } catch (error) {
+//         res.status(500).json(error)
+//     }
+//  }
 
  //like and dislike a post
 
@@ -122,3 +148,46 @@ export const getPost= async(req,res)=>{
         res.status(500).json(error) 
     }
  }
+
+ export const commentPost= async (req, res, next) => {
+     const comment = req.body;
+     console.log(req.params.id);
+     console.log(comment,"comment server pao");
+    try {
+        const post = await PostModel.findById(req.params.id)
+        const commentData = await post.updateOne({$push:{comments:comment}})
+        console.log(commentData);
+        res.status(200).json(commentData)
+    } catch (error) {
+        res.status(500).json(error) 
+    }
+  }
+  // delete a comment
+
+export const deleteComment = async(req,res)=>{
+    const {commentId} = req.body
+    console.log(commentId,'hei')
+    const post = await PostModel.findById(req.params.id)
+    console.log(post)
+    const removeComment = await post.updateOne({$pull:{comments:{_id:commentId}}})
+}
+
+
+
+export const deletePost = async(req,res)=> {
+    const id = req.params.id
+    
+    const userId = req.body.currentUser;
+  
+    try {
+        const post = await PostModel.findById(id)
+        if(post.userId === userId){
+            await post.deleteOne();
+            res.status(200).json("Post deleted successfully")
+        }else{
+            res.status(403).json("Action forbidden")
+        }
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

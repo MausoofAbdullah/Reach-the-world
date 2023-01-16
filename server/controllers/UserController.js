@@ -8,6 +8,7 @@ export const getAllUser=async(req,res)=>{
     let users=await UserModel.find()
     users=users.map((user)=>{
       const {password,...otherDetails}=user._doc
+     // console.log(user._doc,"documents")
       return otherDetails
     })
     res.status(200).json(users)
@@ -129,3 +130,29 @@ export const unfollowUser = async (req, res) => {
     }
   }
 };
+
+//searching users
+
+export const getUserData = async(req,res)=>{
+  const {data} = req.body
+  console.log(data)
+  const peopleData = await UserModel.find({"firstname":new RegExp(data,'i')})
+  res.json(peopleData.slice(0, 10))
+  console.log(peopleData,'hello from getuserdata')
+}
+
+// export const searchUser = async (req, res) => {
+//   try {
+//     const keyword = req.query.name || "";
+//     const users = await UserModel.find({
+//       $or: [
+//         { username: { $regex: keyword, $options: "i" } },
+//         { firstname: { $regex: keyword, $options: "i" } },
+//         { lastname: { $regex: keyword, $options: "i" } },
+//       ],
+//     }).select({ username: 1, firstname: 1, lastname: 1, profilePicture: 1 });
+//     res.status(200).json(users);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };

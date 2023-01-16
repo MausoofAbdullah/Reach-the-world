@@ -21,12 +21,6 @@ io.on("connection",(socket)=>{
         io.emit('get-users',activeUsers)
     })
     
-    socket.on("disconnect",()=>{
-        activeUsers=activeUsers.filter((user)=>user.socketId!== socket.id)
-        console.log("user disconnected",activeUsers)
-        io.emit('get-users',activeUsers)
-        
-    })
     //send message
     socket.on("send-message",(data)=>{
         const {receiverId}=data
@@ -36,5 +30,11 @@ io.on("connection",(socket)=>{
         if(user){
             io.to(user.socketId).emit("receive-message",data)
         }
+    })
+    socket.on("disconnect",()=>{
+        activeUsers=activeUsers.filter((user)=>user.socketId!== socket.id)
+        console.log("user disconnected",activeUsers)
+        io.emit('get-users',activeUsers)
+        
     })
 })

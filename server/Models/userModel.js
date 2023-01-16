@@ -6,6 +6,11 @@ const UserSchema=mongoose.Schema(
             type:String,
             required:true
         },
+        mobile: {
+            type: Number,
+            required: [true, 'Please provide mobile number'],
+            unique: true
+          },
         password:{
             type:String,
             required:true
@@ -31,7 +36,11 @@ const UserSchema=mongoose.Schema(
         country:String,
         verified:Boolean,
         followers:[],
-        following:[]
+        following:[],
+        Active:{
+            type:Boolean,
+            default:true
+        }
     },
     {timestamps:true}
 )

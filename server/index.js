@@ -9,6 +9,8 @@ import PostRoute from "./Routes/PostRoute.js"
 import UploadRoute from "./Routes/uploadRoute.js"
 import chatRoute from "./Routes/chatRoute.js"
 import messageRoute from "./Routes/messageRoute.js"
+import adminRoute from "./Routes/adminRoute.js"
+
 
 //Routes
 const app = express();
@@ -48,3 +50,12 @@ mongoose
   app.use("/upload",UploadRoute)
   app.use('/chat',chatRoute)
   app.use("/message",messageRoute)
+
+ 
+
+
+  //admin side routes
+
+  app.use('/admin',adminRoute)
+
+  

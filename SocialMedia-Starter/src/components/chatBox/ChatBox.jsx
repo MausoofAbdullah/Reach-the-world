@@ -8,18 +8,17 @@ import InputEmoji from "react-input-emoji";
 import "./ChatBox.css";
 import { useRef } from "react";
 
-
-const ChatBox = ({ chat, currentUser,setSendMessage,receiveMessage }) => {
+const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const scroll=useRef()
+  const scroll = useRef();
 
-  useEffect(()=>{
-    if(receiveMessage !== null && receiveMessage.chatId === chat._id){
-      setMessages([...messages,receiveMessage])
+  useEffect(() => {
+    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+      setMessages([...messages, receiveMessage]);
     }
-  },[receiveMessage])
+  }, [receiveMessage]);
   //fetching data for header
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
@@ -42,7 +41,6 @@ const ChatBox = ({ chat, currentUser,setSendMessage,receiveMessage }) => {
       try {
         const { data } = await getMessages(chat._id);
         setMessages(data);
-       
       } catch (error) {
         console.log(error);
       }
@@ -54,32 +52,32 @@ const ChatBox = ({ chat, currentUser,setSendMessage,receiveMessage }) => {
     setNewMessage(newMessage);
   };
 
-  const handleSend=async(e)=>{
-    e.preventDefault()
-    const message={
-      senderId:currentUser,
-      text:newMessage,
-      chatId:chat._id
-    }
+  const handleSend = async (e) => {
+    e.preventDefault();
+    const message = {
+      senderId: currentUser,
+      text: newMessage,
+      chatId: chat._id,
+    };
 
     //send message to database
 
     try {
-        const {data} = await addMessage(message)
-        setMessages([...messages,data])
-        setNewMessage("")
+      const { data } = await addMessage(message);
+      setMessages([...messages, data]);
+      setNewMessage("");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
     //send message to socket server
-    const receiverId=chat.members.find((id)=>id!==currentUser)
-    setSendMessage({...message,receiverId})
-  }
+    const receiverId = chat.members.find((id) => id !== currentUser);
+    setSendMessage({ ...message, receiverId });
+  };
 
   //always scroll to the the last message
-  useEffect(()=>{
-    scroll.current?.scrollIntoView({behavior:"smooth"})
-  },[messages])
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
   return (
     <>
       <div className="ChatBox-container">
@@ -114,7 +112,7 @@ const ChatBox = ({ chat, currentUser,setSendMessage,receiveMessage }) => {
               {messages.map((message) => (
                 <>
                   <div
-                  ref={scroll}
+                    ref={scroll}
                     className={
                       message.senderId === currentUser
                         ? "message own"
@@ -131,7 +129,9 @@ const ChatBox = ({ chat, currentUser,setSendMessage,receiveMessage }) => {
             <div className="chat-sender">
               <div>+</div>
               <InputEmoji value={newMessage} onChange={handleChange} />
-              <div className="send-button button" onClick={handleSend}>send</div>
+              <div className="send-button button" onClick={handleSend}>
+                send
+              </div>
             </div>
           </>
         ) : (
