@@ -2,23 +2,22 @@ import React from "react";
 import "./Auth.css";
 import Logo from "../../img/logonew.png";
 import { useState } from "react";
-<<<<<<< HEAD
 import { useDispatch, useSelector} from "react-redux"
 import { logIn} from "../../actions/AuthAction";
 import { signup } from "../../api/Authrequest";
 import { useNavigate } from 'react-router-dom'
 
-const Auth = () => {
-  const [isSignup,setIsSignup]=useState(true)
-  const [data,setData]=useState({firstname:"",username:"",lastname:"",password:""})
-  const [confirmpass,setConfirmpass]=useState(true)
-  const dispatch=useDispatch()
-  const navigate = useNavigate()
-  const loading=useSelector((state)=>state.authReducer.loading)
-=======
-import { useDispatch, useSelector } from "react-redux";
-import { logIn, signup } from "../../actions/AuthAction";
-import { useNavigate } from "react-router-dom";
+// const Auth = () => {
+//   const [isSignup,setIsSignup]=useState(true)
+//   const [data,setData]=useState({firstname:"",username:"",lastname:"",password:""})
+//   const [confirmpass,setConfirmpass]=useState(true)
+//   const dispatch=useDispatch()
+//   const navigate = useNavigate()
+//   const loading=useSelector((state)=>state.authReducer.loading)
+
+// import { useDispatch, useSelector } from "react-redux";
+// import { logIn, signup } from "../../actions/AuthAction";
+// import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -29,20 +28,20 @@ const Auth = () => {
     password: "",
   });
   const [confirmpass, setConfirmpass] = useState(true);
-const [error,setError]=useState("")
+
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.authReducer.loading);
     
   const navigate = useNavigate();
->>>>>>> otpSignup
+
   console.log(loading)
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-<<<<<<< HEAD
+
   const handleSubmit=async(e)=>{
     e.preventDefault()
 
@@ -50,6 +49,7 @@ const [error,setError]=useState("")
      // data.password===data.confirmpass? dispatch(signup(data)):setConfirmpass(false)
      if(data.password===data.confirmpass){
       const response=await signup(data)
+      console.log(response, "letschaechk")
       navigate("/otpverification",{
         state:{
           registerationData: response.data.data
@@ -58,30 +58,18 @@ const [error,setError]=useState("")
      }
     }else{
       dispatch(logIn(data))
-=======
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
   
 
-     if (isSignup) {
-      data.password === data.confirmpass
-        ? dispatch(signup(data))
-        : setConfirmpass(false);
-    } else  if (data.email === '' || data.password === '') {
-      setError('Please fill the form')
->>>>>>> otpSignup
-    }
-
-    else {
-      dispatch(logIn(data));
-    }
+   
    
   };
+}
 
   const resetForm = () => {
     setConfirmpass(true);
     setData({ firstname: "", username: "", lastname: "", password: "" });
-    setError("");
+    
   };
   return (
     <div className="Auth">
@@ -151,7 +139,7 @@ const [error,setError]=useState("")
               />
             )}
           </div>
-          {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>}
+          {/* {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>} */}
           <span
             style={{
               display: confirmpass ? "none" : "block",
@@ -189,6 +177,5 @@ const [error,setError]=useState("")
       {/* <Login/> */}
     </div>
   );
-};
-
+              }
 export default Auth;

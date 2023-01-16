@@ -6,11 +6,7 @@ const UserSchema=mongoose.Schema(
             type:String,
             required:true
         },
-        mobile: {
-            type: Number,
-            required: [true, 'Please provide mobile number'],
-            unique: true
-          },
+     
         password:{
             type:String,
             required:true

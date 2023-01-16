@@ -35,18 +35,18 @@ function App() {
           path="/auth"
           element={user?.user?.isAdmin?(<Navigate to="../admin" />):user?(<Navigate to="../home" />) : (<Auth />)}
         />
+
+{/* <Route path= '/auth' element={user?<Navigate to= '../home'/> : <Auth/>}/>  */}
         <Route
           path="/profile/:id"
           element={user ? <Profile /> : <Navigate to="../auth" />}
         />
         <Route
           path="/chat"
-<<<<<<< HEAD
-          element={user ? <Chat /> : <Navigate to="../auth" />}
-=======
+          // element={user ? <Chat /> : <Navigate to="../auth" />}
           element={user ? <Chat/> : <Navigate to="../home" />}
         
->>>>>>> otpSignup
+
         />
         <Route
           path="/admin"
