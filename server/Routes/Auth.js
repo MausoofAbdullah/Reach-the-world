@@ -1,9 +1,6 @@
 import express from 'express'
-<<<<<<< HEAD
 import { loginUser, registerUser,verifyotp,resendotp } from '../controllers/AuthController.js'
-=======
-import { loginUser, registerUser,verifyUser } from '../controllers/AuthController.js'
->>>>>>> otpSignup
+
 
 const router = express.Router()
 
