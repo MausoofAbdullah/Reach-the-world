@@ -10,7 +10,7 @@ export const adminRegister = async (req, res) => {
     const hashedPass = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPass;
   
-    const newAdmin = new UserModel({firstname,lastname,username,password:hashedPass,isAdmin:true,Active:false});
+    const newAdmin = new UserModel({firstname,lastname,username,password:hashedPass,isAdmin:true,Active:true});
   //  const newAdmin= new UserModel({username,password,...req.body});
    // const {username,password,...rest}=new UserModel(req.body)
     

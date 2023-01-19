@@ -24,6 +24,7 @@ io.on("connection",(socket)=>{
     //send message
     socket.on("send-message",(data)=>{
         const {receiverId}=data
+        console.log(data,"new data of recieverId")
         const user=activeUsers.find((user)=>user.userId===receiverId)
         console.log(user,"sending from sockt jto")
         console.log("dataasock",data)

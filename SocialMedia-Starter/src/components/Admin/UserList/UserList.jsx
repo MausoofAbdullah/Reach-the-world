@@ -27,7 +27,9 @@ const UserList = () => {
         }
         fetchUsersList()
     },[])
-  //  console.log(user,"fetchuser")
+  console.log(user,"fetchuser")
+  
+ 
   //const blockedUser=blockUser()
   const blockUser=async(userId)=>{
     const blockedUser=await adminBlockUser(userId)
@@ -96,6 +98,7 @@ const UserList = () => {
                 <tbody>
 
                     { user?.map((obj,index,id)=>{
+                      if(!obj.isAdmin){
                         return (
 
                 <tr key={id} >
@@ -125,7 +128,7 @@ const UserList = () => {
                                   {/* <button className={obj.Active? "null" : "unblockbutton" }>Unblock</button> */}
 
                             </tr>
-                        )
+                        )}
                     })}
                 </tbody>
             </Table>
