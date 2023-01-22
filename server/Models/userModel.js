@@ -36,6 +36,17 @@ const UserSchema=mongoose.Schema(
         Active:{
             type:Boolean,
             default:true
+        },
+        tokens: [
+            {
+                token: {
+                    type: String,
+                    required: true,
+                }
+            }
+        ],
+        verifytoken:{
+            type: String,
         }
     },
     {timestamps:true}

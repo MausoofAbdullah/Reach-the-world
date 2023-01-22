@@ -16,7 +16,7 @@ const Post = () => {
     dispatch(getTimelinePosts(user._id))
   },[])
 
-  
+  console.log(params,"params")
 
   if(!posts) return "no posts"
   if(params.id) posts=posts.filter((post)=>post.userId===params.id)
@@ -25,6 +25,7 @@ const Post = () => {
     
     <div className='Post'>
       {loading?"Fetching Posts...":posts.map((post,id)=>{
+       // console.log(post,id,"ahat is i n id")
         return <Posts data={post} id={id} />
       })}
     </div>

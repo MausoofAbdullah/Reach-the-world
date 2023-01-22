@@ -42,6 +42,7 @@ export const updateUser = async (req, res) => {
   const id = req.params.id;
   const { _id, currentUserId, currentUserAdminStatus, password } = req.body;
   console.log(id,req.body,"try")
+  console.log(password,"specifically passwoerd")
 
   if (id === _id) {
     try {

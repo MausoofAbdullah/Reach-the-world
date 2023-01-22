@@ -2,6 +2,7 @@ import UserModel from "../Models/userModel.js";
 import otpModel from "../Models/otpModel.js";
 import bcrypt,{genSalt} from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodeMailer from "nodemailer"
 
 import { sendOtpVerificationEmail } from "../service/nodemailer.js";
 
@@ -96,6 +97,23 @@ export const loginUser = async (req, res) => {
   }
 };
 
+
+//forgot password
+
+// export const forgotPassword=async(req,res)=>{
+//   const {username}=req.body
+//   try {
+//     const user=await UserModel.findOne({username:username})
+//     if(user){
+//       await sendOtpVerificationEmail(user, res)
+//     }else{
+//       res.status(400).json("user does not exist")
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+    
+//   }
+// }
 //otpverification
 
 export const verifyotp = async (req, res) => {
@@ -173,5 +191,88 @@ export const resendotp = async (req, res) => {
       status: "FAILED",
       message: error.message,
     });
+  }
+};
+
+//Nodemailer stuff
+
+
+
+// send email Link For reset Password
+export const resetPassword=async(req,res)=>{
+  
+  const username = req.body;
+  console.log(username,"is this")
+
+  if(!username.username){
+      res.status(401).json({status:401,message:"Enter Your Email"})
+  }
+
+  try {
+      const userfind = await UserModel.findOne({username:username.username});
+      
+
+      // token generate for reset password
+      const token = jwt.sign({_id:userfind._id},  process.env.JWT_KEY,{
+          expiresIn:"1h "
+      });
+      
+      const setusertoken = await UserModel.findByIdAndUpdate({_id:userfind._id},{verifytoken:token},{new:true});
+console.log(setusertoken,"set")
+
+
+      if(setusertoken){
+          const mailOptions = {
+              from:"mausoofabdullah@gmail.com",
+              to:username.username,
+              subject:"Sending Email For password Reset",
+              text:`This Link Valid For 2 MINUTES http://localhost:3000/newpassword/${userfind.id}/${setusertoken.verifytoken}`
+          }
+          let transporter = nodeMailer.createTransport({
+            service: "gmail",
+            auth:{
+                user: "mausoofabdullah@gmail.com",
+                pass: "svlowltpaoqmyqiu"
+            }
+          })
+
+          transporter.sendMail(mailOptions,(error,info)=>{
+              if(error){
+                  console.log("error",error);
+                  res.status(401).json({status:401,message:"email not send"})
+              }else{
+                  console.log("Email sent",info.response);
+                  res.status(201).json({status:201,message:"Email sent Successfully"})
+              }
+          })
+
+      }
+
+  } catch (error) {
+      res.status(401).json({status:401,message:"invalid user"})
+  }
+
+};
+
+
+// verify user for forgot password time
+export const newpassword=async(req,res)=>{
+  const {id,token} = req.params;
+
+  try {
+      const validuser = await UserModel.findOne({_id:id,verifytoken:token});
+      
+      const verifyToken = jwt.verify(token,process.env.JWT_KEY);
+
+      console.log(verifyToken)
+
+      if(validuser && verifyToken._id){
+          res.status(201).json({status:201,validuser})
+      }else{
+          res.status(401).json({status:401,message:"user not exist"})
+      }
+
+  } catch (error) {
+      res.status(401).json({status:401,error})
   }
 };

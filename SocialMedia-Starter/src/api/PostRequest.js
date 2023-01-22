@@ -18,3 +18,4 @@ export const addComment = (id,comment) => API.put(`/post/${id}/comment-post`,com
 export const deleteComment =(id,commentId) => API.post(`/post/${id}/deleteComment`,{commentId:commentId})
 
 export const deletePost = (id,currentUser) => API.post(`/post/${id}/post-delete`,{currentUser:currentUser})
+export const reportPost = (id,currentUser) => API.post(`/post/${id}/post-report`,{currentUser:currentUser})

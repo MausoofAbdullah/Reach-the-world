@@ -36,11 +36,12 @@ const Followerscard = () => {
     <div className='Followerscard' >
       <h3>People you may know</h3>
       {currentPersons.map((person,id)=>{
+        console.log(person,"person inside object")
         if(person._id !==user._id && !person.isAdmin){
           
           return(
             
-              <User person={person} key={id}/>
+              <User person={person} followercount={person.followers.length} key={id}/>
            
               
           )

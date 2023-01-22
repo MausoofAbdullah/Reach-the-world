@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const {ObjectId}=mongoose.Schema;
 
 const postSchema=mongoose.Schema(
     {
@@ -25,7 +26,25 @@ const postSchema=mongoose.Schema(
             user:{
                 type:String,
                 required:true
-            }
+            },
+            // report:[
+            //     {
+            //         id:{
+            //             type:ObjectId,
+            //             ref:"users",
+                    
+            //         },
+            //         savedAt:{
+            //             type:Date,
+            //             required:true
+            //         }
+            //     }
+            // ]
+            report: {
+                type: Map,  
+                of: Boolean,
+              }
+            
         }]},
     {
         timestamps:true

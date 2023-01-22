@@ -41,6 +41,10 @@ const Auth = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const handleForgotPassword=()=>{
+    navigate("/resetPassword")
+  }
+
 
   const handleSubmit=async(e)=>{
     e.preventDefault()
@@ -151,6 +155,18 @@ const Auth = () => {
           >
             * password didn't match !
           </span>
+          <div>
+            <span
+              style={{ fontSize: "13px", cursor: "pointer", color:"red" }}
+              onClick={
+                handleForgotPassword
+              }
+            >
+              {isSignup
+                ? ""
+                : "forgot password?"}
+            </span>
+          </div>
           <div>
             <span
               style={{ fontSize: "13px", cursor: "pointer" }}

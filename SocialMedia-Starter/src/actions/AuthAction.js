@@ -28,7 +28,7 @@ export const verifyotp = (userId,otp) => async(dispatch) => {
     dispatch({type:"AUTH_START"})
     try {
         const {data} = await AuthApi.verifyotp(userId,otp)
-        console.log(data,'auth data ethiyo authacion signupil')
+        
         dispatch({type:"AUTH_SUCCESS", data: data})
         
     } catch (error) {

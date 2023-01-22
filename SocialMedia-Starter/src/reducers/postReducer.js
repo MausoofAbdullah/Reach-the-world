@@ -28,14 +28,18 @@ const postReducer = (
     case "COMMENT_START":
       return{ ...state, loading: true, error:false};
     case "COMMENT_SUCCESS":
+      console.log(action,"whatis in avrion")
       return{ ...state, ...([...state.posts.filter((post)=>post._id===action.id)])[0].comments.push(action.data),loading:false,error:false};
-    case "COMMENT_FAIL":
+      case "COMMENT_FAIL":
       return{ ...state, loading:false, error:true};
       
-       //this is for deleting comments
+      
+       //this is for deleting  posts and comments
       case "DELETE_STARTED":
         return{...state, loading:true, error:false}
       case "DELETE_SUCCESS":
+        console.log(state,"whats in state")
+        
         return{...state,posts:state.posts.filter((post)=>post._id !== action.id), loading:false,error: false}
       case "DELETE_FAIL":
         return{...state, loading:false, error:true}
@@ -45,6 +49,14 @@ const postReducer = (
         return{...state,loading:false,error:false}
       case "COMMENT_DEL_ERROR":
         return{...state,loading:false,error:true}
+
+        //this is for reporting posts
+        case "POST_REPORTED":
+        return{...state, loading:true, error:false}
+        case "REPORT_SUCCESS":
+          return{...state,...([...state.posts.filter((post)=>post._id===action.id)])[0].report.push(action.data),loading:false,error:false}
+
+
   
     
     default:

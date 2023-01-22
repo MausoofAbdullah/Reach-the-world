@@ -48,7 +48,7 @@ const Chat = () => {
       socket.current.on("get-users", (users) => {
           setOnlineUsers(users);
         });
-    }, [user]);
+    }, []);
 
     useEffect(()=>{
       const createCht=async()=>{

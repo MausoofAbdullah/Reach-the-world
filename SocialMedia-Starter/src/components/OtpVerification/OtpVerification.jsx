@@ -50,7 +50,7 @@ console.log(location?.state?.registerationData,'heiksdfg');
     //verify Otp
     const verifyOtp=async(e)=>{
        e.preventDefault()
-       console.log(otp,'nen otp ane')
+       
        console.log(otp.length)
        console.log(typeof(otp));
        dispatch(verifyotp(registerationDetails.userId,otp))

@@ -45,3 +45,16 @@ export const deletePost=(id,currentUser)=> async(dispatch)=>{
         dispatch({type:"DELETE_FAIL"})
     }
 }   
+
+export const reportPost=(id,currentUser)=> async(dispatch)=>{
+    dispatch ({type:"POST_REPORTED"})
+    try {
+        await PostApi.deletePost(id,currentUser);
+        dispatch({type:"REPORT_SUCCESS", id:id})
+
+        
+    } catch (error) {
+        dispatch({type:"REPORT_FAIL"})
+        
+    }
+}

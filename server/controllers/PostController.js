@@ -191,3 +191,29 @@ export const deletePost = async(req,res)=> {
         res.status(500).json(error)
     }
 }
+
+export const reportPost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { loggedInUserId } = req.body;
+        console.log(req.body,"reporting post req.body")
+        const post = await PostModel.findById(id);
+        const isReported = post.report.get(loggedInUserId);
+
+        if (isReported) {
+            console.log("once reported");
+        } else {
+            post.report.set(loggedInUserId, true);
+        }
+
+        const updatedPost = await PostModel.findByIdAndUpdate(
+            id,
+            { report: post.report },
+            { new: true }
+        );
+
+        res.status(200).json(updatedPost);
+    } catch (err) {
+        res.status(409).json({ message: err.message });
+    }
+}
