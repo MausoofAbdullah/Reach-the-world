@@ -210,12 +210,14 @@ export const resetPassword=async(req,res)=>{
 
   try {
       const userfind = await UserModel.findOne({username:username.username});
+      console.log(userfind,"find user")
       
 
       // token generate for reset password
       const token = jwt.sign({_id:userfind._id},  process.env.JWT_KEY,{
-          expiresIn:"1h "
+          expiresIn:"1h"
       });
+      
       
       const setusertoken = await UserModel.findByIdAndUpdate({_id:userfind._id},{verifytoken:token},{new:true});
 console.log(setusertoken,"set")
@@ -258,6 +260,7 @@ console.log(setusertoken,"set")
 // verify user for forgot password time
 export const newpassword=async(req,res)=>{
   const {id,token} = req.params;
+  console.log(id,token," lets check for id and token")
 
   try {
       const validuser = await UserModel.findOne({_id:id,verifytoken:token});
@@ -276,3 +279,43 @@ export const newpassword=async(req,res)=>{
       res.status(401).json({status:401,error})
   }
 };
+
+//change password
+
+export const changepassword=async(req,res)=>{
+  const {id,token} = req.params;
+ 
+
+
+  const {password} = req.body;
+  console.log(req.body,"for qer body")
+
+  try {
+    const validuser = await UserModel.findOne({_id:id,verifytoken:token});
+  
+      
+      
+      const verifyToken = jwt.verify(token,process.env.JWT_KEY);
+      console.log("inside verify token")
+
+      console.log(verifyToken,"is he valid")
+      if(validuser && verifyToken._id){
+         // const newpassword = await bcrypt.hash(password,12);
+  const salt = await bcrypt.genSalt(10);
+  const hashedPass = await bcrypt.hash(password, salt);
+
+
+
+          const setnewuserpass = await UserModel.findByIdAndUpdate({_id:id},{password:hashedPass});
+          console.log(setnewuserpass,"newp password set")
+
+          setnewuserpass.save();
+          res.status(201).json({status:201,setnewuserpass})
+
+      }else{
+          res.status(401).json({status:401,message:"user not exist"})
+      }
+  } catch (error) {
+      res.status(401).json({status:401,error})
+  }
+}

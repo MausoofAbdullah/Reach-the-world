@@ -50,8 +50,10 @@ const PasswordReset = () => {
 //     'Content-Type': 'application/json'
 //     }
 // };
-
-            const res=await reset(username)
+console.log(username,"before")
+const res=await reset(username)
+console.log(username,"after")
+console.log(res,"frontenf")
           
             // const res = await axios.post("/sendpasswordlink", { username }, {
             //  customConfig
@@ -103,12 +105,6 @@ const PasswordReset = () => {
               
               {/* {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>} */}
              
-              <div>
-               
-              </div>
-              <div>
-                
-              </div>
               <button
                 className="button infoButton"
                 onClick={sendLink}

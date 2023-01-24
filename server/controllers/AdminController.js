@@ -1,4 +1,5 @@
 import UserModel from "../Models/userModel.js";
+import PostModel from "../Models/postModel.js"
 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -112,3 +113,30 @@ export const adminRegister = async (req, res) => {
     }
   }
  
+
+  
+export const getAllReports = async (req, res, next) => {
+  try {
+      await PostModel.find({ reportCount: { $not: { $eq: 0 } } }).then((result) => {
+        console.log(result,'resultresultresultresult');
+          res.status(201).json({ status: true, reports: result, message: 'get all reports' })
+      })
+  } catch (error) {
+
+  }
+}
+
+
+
+export const removePost = async (req, res) => {
+  try {
+    console.log(req.body, "req.paramsreq.params");
+    const { postId } = req.body;
+    await post.deleteOne({ postId }).then((response) => {
+      console.log(response, "response");
+      res.status(200).json({ success: true, postId, message: "Post removed" });
+    });
+  } catch (error) {
+    res.status(500).json({ error: true, message: "Can't delete post" });
+  }
+};

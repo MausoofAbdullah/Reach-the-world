@@ -192,28 +192,74 @@ export const deletePost = async(req,res)=> {
     }
 }
 
+// export const reportPost = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { loggedInUserId } = req.body;
+//         console.log(req.body,"reporting post req.body")
+//         const post = await PostModel.findById(id);
+//         const isReported = post.report.get(loggedInUserId);
+
+//         if (isReported) {
+//             console.log("once reported");
+//         } else {
+//             post.report.set(loggedInUserId, true);
+//         }
+
+//         const updatedPost = await PostModel.findByIdAndUpdate(
+//             id,
+//             { report: post.report },
+//             { new: true }
+//         );
+
+//         res.status(200).json(updatedPost);
+//     } catch (err) {
+//         res.status(409).json({ message: err.message });
+//     }
+// }
+
+
 export const reportPost = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { loggedInUserId } = req.body;
-        console.log(req.body,"reporting post req.body")
-        const post = await PostModel.findById(id);
-        const isReported = post.report.get(loggedInUserId);
-
-        if (isReported) {
-            console.log("once reported");
-        } else {
-            post.report.set(loggedInUserId, true);
+      const { postId } = req.params;
+  
+      const body = req.body;
+      const obj = {
+        reason: body.reason,
+        reporterId: body.reporterId,
+        date: new Date(),
+      };
+      console.log(obj, "kkkkjkjk");
+      const postDetails = await PostModel.findOne({ postId });
+      console.log(postDetails,'3d........')
+      const userExists = postDetails.reports.find(
+        (report) => {
+          console.log(report.reporterId._id,'....................',obj.reporterId._id)
+          return report.reporterId._id === obj.reporterId._id
         }
-
-        const updatedPost = await PostModel.findByIdAndUpdate(
-            id,
-            { report: post.report },
-            { new: true }
+      );
+      console.log(userExists,'231231414124');
+      if (userExists) {
+        res.status(200).json({
+          success: false,
+          message: "post is already reported",
+        });
+      } else {
+      await postDetails.updateOne(
+          {
+            $push: {
+              reports: obj,
+            },
+            $inc: {
+              reportCount: 1,
+            },
+          }
         );
-
-        res.status(200).json(updatedPost);
-    } catch (err) {
-        res.status(409).json({ message: err.message });
-    }
-}
+  
+        await postDetails.save();
+        // .then((response) => {
+        res.status(201).json({ status: true, message: "Report submitted" });
+        // })
+      }
+    } catch (error) {}
+  };

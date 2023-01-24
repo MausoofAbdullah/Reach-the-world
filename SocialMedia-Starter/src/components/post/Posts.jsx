@@ -12,7 +12,8 @@ import InputEmoji from "react-input-emoji"
 import deletButton from '../../img/deleteButton.png'
 import reportButton from '../../img/file-earmark-excel.svg'
 import PostDeleteModal from '../PostDeleteModal/PostDeleteModal.jsx'
-import PostReportModal from "../postReportModal/PostReportModal.jsx"
+//import PostReportModal from "../postReportModal/PostReportModal.jsx"
+import Report from "../ReportModal/Report.jsx"
 
 import { format } from "timeago.js"
 import DeleteComment from '../DeleteComment/DeleteComment.jsx'
@@ -109,7 +110,7 @@ const Posts = ({data}) => {
                </>:
                <>
                 <img src={reportButton} onClick={() => setModalOpen((prev) => !prev)} style={{ width: "28px", height: "28px", display: "flex", alignSelf: 'flex-end' }} alt="" />
-                  <PostReportModal modalOpen={modalOpen} setModalOpen={setModalOpen} id={data._id} currentUser={user._id} />
+                  <Report modalOpen={modalOpen} setModalOpen={setModalOpen} postId={data._id} currentUser={user._id} />
                </>
             }
       </div>

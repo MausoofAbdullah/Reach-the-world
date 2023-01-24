@@ -8,7 +8,7 @@ router.put('/:id',updatePost)
 //router.delete("/:id",deletePost)
 router.put('/:id/comment-post', commentPost)
 router.post("/:id/post-delete", deletePost);
-router.post('/:id/post-report',reportPost)
+router.post('/:postId/report-post', reportPost)
 router.put('/:id/like',likePost)
 router.get("/:id/timeline",getTimelinePosts)
 router.post('/:id/deleteComment',deleteComment)

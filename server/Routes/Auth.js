@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginUser, registerUser,verifyotp,resendotp, resetPassword,newpassword } from '../controllers/AuthController.js'
+import { loginUser, registerUser,verifyotp,resendotp, resetPassword,newpassword, changepassword } from '../controllers/AuthController.js'
 
 
 const router = express.Router()
@@ -7,6 +7,7 @@ const router = express.Router()
 router.post('/register',registerUser)
 router.post('/sendpasswordlink',resetPassword)
 router.get("/newpassword/:id/:token",newpassword)
+router.post("/:id/:token",changepassword)
 //router.post('/verify-user', verifyUser)
 router.post('/login',loginUser)
 router.post('/verifyotp',verifyotp)

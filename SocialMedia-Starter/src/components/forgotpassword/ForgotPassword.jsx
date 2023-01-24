@@ -5,7 +5,7 @@ import { useState,useEffect} from "react";
 import { useDispatch, useSelector} from "react-redux"
 import { logIn} from "../../actions/AuthAction";
 import { signup } from "../../api/Authrequest";
-import { newpassword } from "../../api/Authrequest";
+import { newpassword ,changepassword} from "../../api/Authrequest";
 
 
 import { useNavigate, useParams, NavLink } from 'react-router-dom';
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
 
 
   const uservalid=async()=>{
-    const res=await newpassword()
+    const res=await newpassword(id,token)
     const data=await res.json()
     
     if (data.status == 201) {
@@ -64,14 +64,14 @@ const ForgotPassword = () => {
     //     });
    // } else
      
-        const res = await fetch(`/${id}/${token}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ password })
-        });
-
+        // const res = await fetch(`/${id}/${token}`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({ password })
+        // });
+const res=await changepassword(id,token,password)
         const data = await res.json()
 
         if (data.status == 201) {
@@ -101,13 +101,13 @@ const ForgotPassword = () => {
 
       <div className="a-right">
         <form className="infoForm authForm" >
-          <h3>ForgotPassword? YOu can now</h3>
+          <h3>Enter your new password</h3>
 
        
 
           <div>
             <input
-              type="text"
+              type="password"
               placeholder="New password"
               className="infoInput"
               name="password"
@@ -117,13 +117,16 @@ const ForgotPassword = () => {
           </div>
           
           {/* {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>} */}
-         
-          <div>
-           
-          </div>
-          <div>
-            
-          </div>
+          {/* <button
+            className="button buttonleft"
+            onClick={send}
+             disabled={loading}
+          >
+            send
+          </button> */}
+         <div style={{display:"flex",justifyContent:"space-between"}} >
+         <p><NavLink to="/">Home</NavLink></p>
+        
           <button
             className="button infoButton"
             onClick={sendpassword}
@@ -131,6 +134,7 @@ const ForgotPassword = () => {
           >
             send
           </button>
+          </div>
         </form>
       </div>
 

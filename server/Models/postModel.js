@@ -40,12 +40,14 @@ const postSchema=mongoose.Schema(
             //         }
             //     }
             // ]
-            report: {
-                type: Map,  
-                of: Boolean,
-              }
+           
             
-        }]},
+        }],
+        reports:{
+            type: Array,
+            default: [],
+          }
+    },
     {
         timestamps:true
     }
