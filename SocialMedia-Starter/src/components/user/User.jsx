@@ -11,8 +11,8 @@ import {MdVerifiedUser} from 'react-icons'
 const User = ({person,followercount}) => {
     const dispatch=useDispatch()
     const {user}=useSelector((state)=>state.authReducer.authData)
-    console.log(user,"what is there in user")
-    console.log(user.followers.length,"how many")
+    // console.log(user,"what is there in user")
+    // console.log(user.followers.length,"how many")
     const [following,setFollowing]=useState(person.followers.includes(user._id))
   const serverPublic=process.env.REACT_APP_PUBLIC_FOLDER
   const handleFollow=()=>{

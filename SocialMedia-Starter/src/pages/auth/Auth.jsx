@@ -28,6 +28,7 @@ const Auth = () => {
     password: "",
   });
   const [confirmpass, setConfirmpass] = useState(true);
+  const [error,setError]=useState("")
 
 
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const Auth = () => {
   console.log(loading)
 
   const handleChange = (e) => {
+    setError('')
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -48,10 +50,28 @@ const Auth = () => {
 
   const handleSubmit=async(e)=>{
     e.preventDefault()
+    setError('')
 
     if(isSignup){
      // data.password===data.confirmpass? dispatch(signup(data)):setConfirmpass(false)
-     if(data.password===data.confirmpass){
+     if (data.firstname === '' || data.password === '' || data.lastname === "" || data.username === "" || data.confirmpass === "") {
+      setError('**Please fill all the fields')
+      setTimeout(()=>{
+        setError("")
+      },3000)
+     }else if ((data.username.indexOf('@') <= 0) ){
+      setError("Email not valid")
+     }
+     else if(data.password!==data.confirmpass){
+      setError("**password didn't match")
+      setTimeout(()=>{
+        setError("")
+      },3000)
+     }else if (data.password.length < 3 || data.password.length > 15){
+      setError("password length should be between 3 & 6")
+     }
+     else{
+      
       const response=await signup(data)
       console.log(response, "letschaechk")
       navigate("/otpverification",{
@@ -61,13 +81,25 @@ const Auth = () => {
        })
      }
     }else{
-      dispatch(logIn(data))
+      setError('')
+      if (data.email === '' || data.password === '') {
+        setError('Please fill the form')
+        setTimeout(()=>{
+          setError("")
+        },3000)
+      }
+      else {  
+
+       dispatch(logIn(data))
+      
+      }
 
   
 
    
    
   };
+  
 }
 
   const resetForm = () => {
@@ -123,6 +155,7 @@ const Auth = () => {
               value={data.username}
             />
           </div>
+          {/* {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>} */}
           <div>
             <input
               type="password"
@@ -143,7 +176,7 @@ const Auth = () => {
               />
             )}
           </div>
-          {/* {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>} */}
+          {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>}
           <span
             style={{
               display: confirmpass ? "none" : "block",

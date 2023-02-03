@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
 
    const newUser = new UserModel(req.body);
    const { username } = req.body;
-   console.log(req.body,"what is in it")
+   //console.log(req.body,"what is in it")
    
   
 
@@ -72,9 +72,12 @@ export const loginUser = async (req, res) => {
     const user = await UserModel.findOne({ username: username });
     if (user) {
       const validity = await bcrypt.compare(password, user.password);
+      if(user.Active===false){
+        res.status(400).json("You donot have permission")
+      }
 
       // validity?res.status(200).json(user):res.status(400).json("wrong Password")
-      if (!validity) {
+      else if (!validity) {
         res.status(400).json("wrong password");
       } else {
         const token = jwt.sign(
@@ -87,7 +90,7 @@ export const loginUser = async (req, res) => {
         );
        
         res.status(200).json({ user, token });
-        console.log(user,"login");
+        // console.log(user,"gap",token,"login");
       }
     } else {
       res.status(400).json("user does not exist");

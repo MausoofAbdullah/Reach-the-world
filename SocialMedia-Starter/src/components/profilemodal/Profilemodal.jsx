@@ -4,16 +4,17 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { uploadImage } from "../../actions/uploadAction";
-import { updateUser } from "../../actions/userAction";
+//import { uploadImage } from "../../actions/uploadAction";
+import { uploadImage } from "../../api/UploadRequest";
+import { updateUser,getUser } from "../../actions/userAction";
 
 
 function Profilemodal({ modalOpened, setModalOpened,data }) {
   const theme = useMantineTheme();
   const {password,...other}=data
   const [formData,setFormData]=useState(other)
-  const [profileImage,setProfileImage]=useState(null)
-  const [coverImage,setCoverImage]=useState(null)
+  const [profilePicture,setProfilePicture] = useState(null)
+  const [coverPicture, setCoverPicture] = useState(null)
   const dispatch=useDispatch()
   const param=useParams()
   const {user}=useSelector((state)=>state.authReducer.authData)
@@ -25,20 +26,18 @@ function Profilemodal({ modalOpened, setModalOpened,data }) {
   const onImageChange=(event)=>{
     if(event.target.files && event.target.files[0]){
       let img=event.target.files[0]
-      event.target.name==="profileImage"
-      ?setProfileImage(img)
-      :setCoverImage(img)
+      event.target.name === "profilePicture" ? setProfilePicture(img) : setCoverPicture(img);
     }
   }
 
   const handleSubmit=(e)=>{
     e.preventDefault()
     let UserData=formData
-    if(profileImage){
+    if(profilePicture){
       const data=new FormData()
-      const fileName=Date.now()+profileImage.name
+      const fileName=Date.now()+profilePicture.name
       data.append("name",fileName)
-      data.append("file",profileImage)
+      data.append("file",profilePicture)
       UserData.profilePicture=fileName
       try {
         dispatch(uploadImage(data))
@@ -46,11 +45,11 @@ function Profilemodal({ modalOpened, setModalOpened,data }) {
         console.log(error)
       }
     }
-    if(coverImage){
+    if(coverPicture){
       const data=new FormData()
-      const fileName=Date.now()+coverImage.name
+      const fileName=Date.now()+coverPicture.name
       data.append("name",fileName)
-      data.append("file",coverImage)
+      data.append("file",coverPicture)
       UserData.coverPicture=fileName
       try {
         dispatch(uploadImage(data))
@@ -62,6 +61,7 @@ function Profilemodal({ modalOpened, setModalOpened,data }) {
     console.log(UserData,"check")
     
     setModalOpened(false)
+    dispatch(getUser(user._id))
   }
 
 
@@ -127,9 +127,9 @@ function Profilemodal({ modalOpened, setModalOpened,data }) {
         </div>
         <div>
             Profile Image
-            <input type="file" name="profileImage" onChange={onImageChange}/>
+            <input type="file" name="profilePicture" onChange={onImageChange}/>
             Cover Image
-            <input type="file" name="coverImage" onChange={onImageChange}/>
+            <input type="file" name="coverPicture" onChange={onImageChange}/>
 
         </div>
         <button className="button infoButton" onClick={handleSubmit}>Update</button>

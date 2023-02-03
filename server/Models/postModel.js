@@ -10,6 +10,10 @@ const postSchema=mongoose.Schema(
         desc:String,
         likes:[],
         image:String,
+        removed:{
+            type:Boolean,
+            default:false
+        },
         comments:[{
             commentedUser:{
                 type:String,
@@ -43,10 +47,27 @@ const postSchema=mongoose.Schema(
            
             
         }],
-        reports:{
-            type: Array,
-            default: [],
-          }
+
+        //reports working
+        // reports:{
+        //     type: Array,
+        //     default: [],
+        //   },
+        //   reportcount:{
+        //     type:Number,
+        //     default:0
+        //   }
+
+        reports:[{
+            reportedUser:{
+                type:String,
+                required:true
+            },
+            reason:{
+                type:String,
+                required:true
+            }
+        }]
     },
     {
         timestamps:true

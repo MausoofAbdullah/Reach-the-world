@@ -91,7 +91,7 @@ export const adminRegister = async (req, res) => {
           Active:false
         }
       })
-      res.status(200).json({blockstatus: true})
+      res.status(201).json({blockstatus: true})
     } catch (error) {
       res.status(500).json({ message: error.message})
     }
@@ -107,7 +107,7 @@ export const adminRegister = async (req, res) => {
           Active:true
         }
       })
-      res.status(200).json({unblockstatus: true})
+      res.status(200).json({blockstatus: false})
     } catch (error) {
       res.status(500).json({ message: error.message})
     }
@@ -115,22 +115,22 @@ export const adminRegister = async (req, res) => {
  
 
   
-export const getAllReports = async (req, res, next) => {
-  try {
-      await PostModel.find({ reportCount: { $not: { $eq: 0 } } }).then((result) => {
-        console.log(result,'resultresultresultresult');
-          res.status(201).json({ status: true, reports: result, message: 'get all reports' })
-      })
-  } catch (error) {
+// export const getAllReports = async (req, res, next) => {
+//   try {
+//       await PostModel.find({ reportCount: { $not: { $eq: 0 } } }).then((result) => {
+//         console.log(result,'resultresultresultresult');
+//           res.status(201).json({ status: true, reports: result, message: 'get all reports' })
+//       })
+//   } catch (error) {
 
-  }
-}
+//   }
+// }
 
 
 
 export const removePost = async (req, res) => {
   try {
-    console.log(req.body, "req.paramsreq.params");
+    console.log(req.body, "post reqbody");
     const { postId } = req.body;
     await post.deleteOne({ postId }).then((response) => {
       console.log(response, "response");
@@ -140,3 +140,36 @@ export const removePost = async (req, res) => {
     res.status(500).json({ error: true, message: "Can't delete post" });
   }
 };
+
+//show reported posts for admin
+
+export const getReportedPosts = async(req,res) =>{
+  const posts = await PostModel.find()
+  const reportedPosts = posts.filter((post)=>post.reports.length > 0)
+  //console.log(posts,'posts',reportedPosts,'posts with reports')
+  res.status(200).json(reportedPosts)
+}
+
+export const reportedPostRemove = async(req,res) => {
+  console.log("evide ethiyo");
+  const postId = req.params.id
+  try {
+      const removedFieldUpdate = await PostModel.findById(postId)
+      console.log(removedFieldUpdate,"updatttttttt")
+    
+      if(removedFieldUpdate.removed){
+          const response = await removedFieldUpdate.updateOne({$set:{removed:false}})
+          console.log(response,"post unblicked")
+          res.status(200).json("post unblocked")
+      }else{
+          const response = await removedFieldUpdate.updateOne({$set:{removed:true}})
+          
+          
+          res.status(200).json("post blocked successfully")
+
+      }
+      
+  } catch (error) {
+      res.status(500).json(error)
+  }
+}

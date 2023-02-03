@@ -11,12 +11,14 @@ const Post = () => {
   const dispatch=useDispatch()
   const {user}=useSelector((state)=>state.authReducer.authData)
   let {posts,loading}=useSelector((state)=>state.postReducer)
+  posts = posts.filter((post)=>post.removed===false)
+
   const params=useParams()
   useEffect(()=>{
     dispatch(getTimelinePosts(user._id))
   },[])
 
-  console.log(params,"params")
+ // console.log(params,"params")
 
   if(!posts) return "no posts"
   if(params.id) posts=posts.filter((post)=>post.userId===params.id)

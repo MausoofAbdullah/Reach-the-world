@@ -28,11 +28,12 @@ const UserList = () => {
         fetchUsersList()
     },[])
   console.log(user,"fetchuser")
-  
- 
+  //const activeUser=user.map((active)=>{return active.Active})
+ //console.log(activeUser,"active userlist")
   //const blockedUser=blockUser()
   const blockUser=async(userId)=>{
     const blockedUser=await adminBlockUser(userId)
+    console.log(blockUser,"1");
     if (blockedUser.data.blockstatus === true){
       setUser((user) => {
         user.map((val) => {
@@ -43,7 +44,7 @@ const UserList = () => {
         })
       })
     }
-    console.log(blockedUser)
+    console.log(blockedUser,"blockeduser")
     // if(blockedUser.data.success){
     //   console.log("user blocked")
     // }

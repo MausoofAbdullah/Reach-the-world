@@ -51,10 +51,10 @@ const postReducer = (
         return{...state,loading:false,error:true}
 
         //this is for reporting posts
-        case "POST_REPORTED":
-        return{...state, loading:true, error:false}
-        case "REPORT_SUCCESS":
-          return{...state,...([...state.posts.filter((post)=>post._id===action.id)])[0].report.push(action.data),loading:false,error:false}
+        // case "POST_REPORTED":
+        // return{...state, loading:true, error:false}
+        // case "REPORT_SUCCESS":
+        //   return{...state,...([...state.posts.filter((post)=>post._id===action.id)])[0].report.push(action.data),loading:false,error:false}
 
 
   

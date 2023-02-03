@@ -6,6 +6,9 @@ import { useDispatch, useSelector} from "react-redux"
 import { logIn} from "../../actions/AuthAction";
 import { signup } from "../../api/Authrequest";
 import { newpassword ,changepassword} from "../../api/Authrequest";
+import toast from 'react-hot-toast'
+
+
 
 
 import { useNavigate, useParams, NavLink } from 'react-router-dom';
@@ -22,7 +25,7 @@ const ForgotPassword = () => {
   const { id, token } = useParams();
   const history = useNavigate();
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(false);
   
 
 
@@ -31,7 +34,7 @@ const ForgotPassword = () => {
     
   const navigate = useNavigate();
 
-  console.log(loading)
+ // console.log(loading)
 
   const handleChange = (e) => {
     setPassword(e.target.value)
@@ -54,11 +57,12 @@ const ForgotPassword = () => {
   const sendpassword = async (e) => {
     e.preventDefault();
 
-    // if (password === "") {
-    //     toast.error("password is required!", {
-    //         position: "top-center"
-    //     });
-    // } else if (password.length < 6) {
+    if (password === "") {
+        toast.error("password is required!", {
+            position: "top-center"
+        });
+    } 
+    //else if (password.length < 6) {
     //     toast.error("password must be 6 char!", {
     //         position: "top-center"
     //     });
@@ -71,18 +75,16 @@ const ForgotPassword = () => {
         //     },
         //     body: JSON.stringify({ password })
         // });
+        else{
 const res=await changepassword(id,token,password)
-        const data = await res.json()
+        // const data = await res.json()
+        // console.log(data,"data in response")
+        console.log(res,"rrrrrewesdfdsfdsfsdfd")
 
-        if (data.status == 201) {
+        if (res.status == 201) {
             setPassword("")
             setMessage(true)
-        } else {
-            // toast.error("! Token Expired generate new LInk",{
-            //     position: "top-center"
-            // })
-        }
-    
+        } }
 }
 
 
@@ -115,6 +117,7 @@ const res=await changepassword(id,token,password)
               value={password}
             />
           </div>
+          {message && <p>new password set ,go to home and login again</p>}
           
           {/* {error && <p style={{ color: 'red' }} className='error-form'>{error}</p>} */}
           {/* <button

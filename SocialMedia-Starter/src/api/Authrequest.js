@@ -4,10 +4,11 @@ const API= axios.create({baseURL:"http://localhost:5000"})
 
 export const logIn=(FormData)=>API.post("/auth/login",FormData)
 export const signup=(FormData)=>API.post("/auth/register",FormData)
+
 //export const forgot=(FormData)=>API.post("/auth/forgotPassword",FormData)
 export const reset=(resetEmail)=>API.post("/auth/sendpasswordlink",{username:resetEmail})
 
-console.log("verigy check")
+
 export const newpassword=(id,token)=>API.get(`/auth/newpassword/${id}/${token}`)
 export const changepassword=(id,token,password)=>API.post(`auth/${id}/${token}`,{password:password})
 

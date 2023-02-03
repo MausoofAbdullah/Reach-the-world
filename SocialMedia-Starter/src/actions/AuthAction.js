@@ -1,13 +1,18 @@
 import * as AuthApi from "../api/Authrequest"
+import toast from 'react-hot-toast'
+
 export const logIn= (FormData)=>async(dispatch)=>{
     dispatch({type:"AUTH_START"})
     try {
         const {data} =await AuthApi.logIn(FormData)
+console.log(data,"sssssssssss")
         dispatch({type:"AUTH_SUCCESS",data:data})
-    
+        
         
     } catch (error) {
-        console.log(error)
+        toast.error(error.response.data)
+        console.log(error,"rrrrrrr")
+       // console.log(data,"data whil logun")
         dispatch({type:"AUTH_FAIL"})
     }
 }
@@ -32,7 +37,7 @@ export const verifyotp = (userId,otp) => async(dispatch) => {
         dispatch({type:"AUTH_SUCCESS", data: data})
         
     } catch (error) {
-        console.log(error);
+        console.log(error,"erroe name");
         dispatch({type:"AUTH_FAIL"})
     }
 }

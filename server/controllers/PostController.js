@@ -5,6 +5,8 @@ import UserModel from "../Models/userModel.js";
 //create new post
 
 export const createPost= async(req,res)=>{
+  
+  console.log(req.body,"ffffffffff")
     const newPost= new PostModel(req.body)
 
 
@@ -116,6 +118,7 @@ export const getPost= async(req,res)=>{
  export const getTimelinePosts=async (req,res)=>{
     const userId=req.params.id
     try {
+        
         const currentUserPosts=await PostModel.find({userId: userId})
         const followingPosts=await UserModel.aggregate([
             {
@@ -139,6 +142,7 @@ export const getPost= async(req,res)=>{
                 }
             }
         ])
+        
         res.status(200).json(currentUserPosts.concat(...followingPosts[0].followingPosts)
         .sort((a,b)=>{
             return b.createdAt-a.createdAt
@@ -219,47 +223,61 @@ export const deletePost = async(req,res)=> {
 // }
 
 
-export const reportPost = async (req, res) => {
-    try {
-      const { postId } = req.params;
+// export const reportPost = async (req, res) => {
+//     try {
+//       const { postId } = req.params;
+//       console.log(postId,"postid report")
   
-      const body = req.body;
-      const obj = {
-        reason: body.reason,
-        reporterId: body.reporterId,
-        date: new Date(),
-      };
-      console.log(obj, "kkkkjkjk");
-      const postDetails = await PostModel.findOne({ postId });
-      console.log(postDetails,'3d........')
-      const userExists = postDetails.reports.find(
-        (report) => {
-          console.log(report.reporterId._id,'....................',obj.reporterId._id)
-          return report.reporterId._id === obj.reporterId._id
-        }
-      );
-      console.log(userExists,'231231414124');
-      if (userExists) {
-        res.status(200).json({
-          success: false,
-          message: "post is already reported",
-        });
-      } else {
-      await postDetails.updateOne(
-          {
-            $push: {
-              reports: obj,
-            },
-            $inc: {
-              reportCount: 1,
-            },
-          }
-        );
+//      const body = req.body;
+//     // console.log(body,"report obj bodyh")
+//       const obj = {
+//         reason: body.reason,
+//         reporterId: body.reporterId,
+//         date: new Date(),
+//       };
+//      console.log(obj, "kkkkjkjk");
+//       const postDetails = await PostModel.findOne({_id: postId });
+//       console.log(postId,"new postid for checking")
+//     console.log(postDetails,'3d........')
+//       const userExists = postDetails.reports.find(
+//         (report) => {
+//           console.log(report.reporterId,'....................',obj.reporterId)
+//           return report.reporterId === obj.reporterId
+//         }
+//       );
+//     //  console.log(userExists,'231231414124');
+//       if (userExists) {
+//         res.status(200).json({
+//           success: false,
+//           message: "post is already reported",
+//         });
+//       } else {
+//       await postDetails.updateOne(
+//           {
+//             $push: {
+//               reports: obj,
+//             },
+//             $inc: {
+//               reportCount: 1,
+//             },
+//           }
+//         );
   
-        await postDetails.save();
-        // .then((response) => {
-        res.status(201).json({ status: true, message: "Report submitted" });
-        // })
-      }
-    } catch (error) {}
-  };
+//       const hosapost= await postDetails.save();
+//     //  console.log(hosapost,"hosa post")
+//         // .then((response) => {
+//         res.status(201).json({ status: true, message: "Report submitted" });
+//         // })
+//       }
+//     } catch (error) {}
+//   };
+
+//report post S
+
+export const reportPost = async(req,res) =>{
+  const id = req.params.id
+  console.log(id,'heloo')
+  console.log(req.body,'report post')
+  
+  const response = await PostModel.findByIdAndUpdate(id,{$push:{reports:req.body}})
+}

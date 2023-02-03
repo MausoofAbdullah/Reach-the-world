@@ -13,6 +13,7 @@
     width: 1.5rem;
     height: 1.5rem;
 }
+
 .navIcons>a>img{
     width: 1.5rem;
     height: 1.5rem;
@@ -23,3 +24,33 @@
     width: 80%;
     align-self: center;
 }
+.counter {
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 93.3%;
+    
+    top: -5px;
+    right: -5px;}
+    .notifications {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: white;
+        color: black;
+        font-weight: 300;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+      }
+      .notification {
+        padding: 5px;
+        font-size: 14px;
+      }

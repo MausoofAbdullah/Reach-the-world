@@ -5,7 +5,18 @@
     padding: 1rem;
     border-radius: 1rem;
 }
-
+.errorMsg{
+    color: red;
+    position: absolute;
+    bottom: 43px;
+    left: 10px;
+    
+    z-index: 1;
+  
+}
+.post-container{
+    position: relative;
+}
 .Postshare>img{
     border-radius: 50%;
     width: 3rem;

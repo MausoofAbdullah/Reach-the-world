@@ -26,8 +26,9 @@ export const addComment=(id,comment) => async(dispatch)=>{
 export const deleteComment=(postId,commentId)=>async(dispatch)=>{
     dispatch({type:"COMMENT_DEL_START"})
     try {
-        dispatch({type:"COMMENT_DEL_SUCCESS",data:commentId,id:postId})
         await PostApi.deleteComment(postId,commentId)
+        dispatch({type:"COMMENT_DEL_SUCCESS",data:commentId,id:postId})
+        console.log(postId,commentId,"dfdfdfdfdfdfdfdfdcommmment")
     } catch (error) {
         dispatch({type:"COMMENT_DEL_ERROR"})
         console.log(error)
@@ -46,15 +47,50 @@ export const deletePost=(id,currentUser)=> async(dispatch)=>{
     }
 }   
 
-export const reportPost=(id,currentUser)=> async(dispatch)=>{
-    dispatch ({type:"POST_REPORTED"})
-    try {
-        await PostApi.deletePost(id,currentUser);
-        dispatch({type:"REPORT_SUCCESS", id:id})
+// export const reportPost=(id,currentUser)=> async(dispatch)=>{
+//     dispatch ({type:"POST_REPORTED"})
+//     try {
+//         await PostApi.deletePost(id,currentUser);
+//         dispatch({type:"REPORT_SUCCESS", id:id})
 
         
-    } catch (error) {
-        dispatch({type:"REPORT_FAIL"})
+//     } catch (error) {
+//         dispatch({type:"REPORT_FAIL"})
         
+//     }
+// }
+export const ReportPost =(reportData,postId) => async (dispatch) => {
+    try {
+       return await PostApi.ReportPost(reportData,postId)
+    } catch (error) {
+
+        console.log(error)
+        // if(error.response.data === "token expired"){
+            
+        //     dispatch({type:"LOG_OUT"})
+        //    }
+    }
+}
+
+export const getReportedPosts = () => async (dispatch) => {
+    try {
+        return await PostApi.getReportedPosts()
+    } catch (error) {
+        if(error.response.data === "token expired"){
+            
+            dispatch({type:"LOG_OUT"})
+           }
+    }
+}
+
+
+export const reportedPostRemove = (postId) => async (dispatch) =>{
+    try {
+        return await PostApi.reportedPostRemove(postId)
+    } catch (error) {
+        if(error.response.data === "token expired"){
+            
+            dispatch({type:"LOG_OUT"})
+           }
     }
 }

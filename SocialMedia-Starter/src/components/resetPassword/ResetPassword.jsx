@@ -87,7 +87,7 @@ console.log(res,"frontenf")
     
           <div className="a-right">
             <form className="infoForm authForm" autoComplete=''>
-              <h3>ForgotPassword? YOu can Reset now</h3>
+              <h3>ForgotPassword? You can Reset now</h3>
               {message ? <p style={{ color: "green", fontWeight: "bold" }}>pasword reset link send Successfully in Your Email</p> : ""}
     
            

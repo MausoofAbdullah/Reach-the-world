@@ -44,6 +44,7 @@ const Chat = () => {
   
   useEffect(() => {
       socket.current = io("http://localhost:8800");
+      console.log("conne")
       socket.current.emit("new-user-add", user._id);
       socket.current.on("get-users", (users) => {
           setOnlineUsers(users);
@@ -107,7 +108,7 @@ const Chat = () => {
         <div className="Chat-container">
           <h2>Chats</h2>
           <div className="Chat-list">
-            {chats.map((chat) => (
+            {chats.map((chat,i) => (
               <div
                 onClick={() => {
                   setCurrentChat(chat);

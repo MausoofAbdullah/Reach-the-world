@@ -10,11 +10,16 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadImage, uploadPost } from "../../actions/uploadAction";
+import toast from 'react-hot-toast'
 
 const Postshare = () => {
   const loading = useSelector((state) => state.postReducer.uploading);
   const [image, setImage] = useState(null);
+ 
   const imageRef = useRef();
+  const [inputValue,setInputValue]=useState('')
+  const [msssg,setMsssg]=useState("")
+ 
   const dispatch = useDispatch();
 
   const desc = useRef();
@@ -24,39 +29,72 @@ const Postshare = () => {
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
-      setImage(img);
+      const reader = new FileReader();
+      if (!img.name.match(/\.(jpg|jpeg|png|gif)$/)){
+        setMsssg("only .png, .jpg, .jpeg format allowed!*")
+      setTimeout(()=>{
+        setMsssg('')
+      },3000) 
+      }
+      
+      else{    setImage(img);}
+  
     }
   };
 
   const reset = () => {
     setImage(null);
     desc.current.value = "";
+    setInputValue('')
   };
   const handleSubmit = (e) => {
+    document.getElementById('postInput').placeholder='Select Image or Type Somthing*'
+    // setViewMsg(true)
+    setTimeout(()=>{
+      // setViewMsg('')
+      document.getElementById('postInput').placeholder='whats happening?'
+    },3000)
     e.preventDefault();
 
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
     };
-
+    if(image){
+      console.log(image,"what is image  name");
+    }
+    
     if (image) {
+      
+      
       const data = new FormData();
       const filename = Date.now() + image.name;
+      const reader = new FileReader();
+      // if (!imageFile.name.match(/\.(jpg|jpeg|png|gif)$/)){
+      //   setMsssg("enter valid file")
+      // }
       console.log(filename, "fiind");
 
       data.append("name", filename);
       data.append("file", image);
       newPost.image = filename;
-      console.log(newPost);
-      console.log(data, "yes");
+      // console.log(newPost,'fileeeee');
+      // console.log(data, "yes");
       try {
         dispatch(uploadImage(data));
+      
+        
+        dispatch(uploadPost(newPost));
       } catch (error) {
         console.log(error);
       }
+    }else if(inputValue){
+
+      dispatch(uploadPost(newPost));
+
+    }else if(inputValue == ''){
+     
     }
-    dispatch(uploadPost(newPost));
     reset();
   };
   return (
@@ -69,8 +107,10 @@ const Postshare = () => {
         }
         alt=""
       />
-      <div>
-        <input ref={desc} required type="text" placeholder="whats happening?" />
+      <div className="post-container">
+      {/* {viewMsg ? <p className="errorMsg">Select Image or Type Somthing*</p> : null} */}
+        <input id="postInput" ref={desc}  type="text" placeholder="whats happening?" onChange={(e)=> setInputValue(e.target.value)}/>
+        {msssg && <p style={{color:"red", fontWeight: 'bold'}}>{msssg}</p>}
         <div className="postOptions">
           <div
             className="option"

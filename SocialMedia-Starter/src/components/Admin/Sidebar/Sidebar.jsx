@@ -17,6 +17,9 @@ const Sidebar = () => {
   const adminuserList = () => {
     navigate('/admin/user-list')
   }
+  const adminReportList=()=>{
+    navigate('/admin/reported-list')
+  }
 
   const handleLogout = ()=>{
     dispatch(logout())
@@ -33,6 +36,9 @@ const Sidebar = () => {
                 <div className='adminsidebar-text' onClick={adminuserList}>  <BsPeopleFill />  Users List</div>
             </div>
 
+            <div className="adminsidebar-options">
+                <div className='adminsidebar-text' onClick={adminReportList} >  <BsBoxArrowRight />  Reported possts</div>
+            </div>
             <div className="adminsidebar-options">
                 <div className='adminsidebar-text' onClick={handleLogout} >  <BsBoxArrowRight />  Logout</div>
             </div>
